@@ -19,7 +19,7 @@ jobs:
           cd sout_we_rouh
           flutter pub get
           flutter build apk --release
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: app-release
           path: sout_we_rouh/build/app/outputs/flutter-apk/app-release.apk
