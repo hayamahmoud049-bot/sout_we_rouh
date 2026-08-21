@@ -18,18 +18,16 @@ jobs:
           channel: 'stable'
 
       - name: Extract project zip
-        run: unzip sout_we_rouh.zip -d sout_we_rouh
+        run: unzip -o sout_we_rouh.zip
 
       - name: Get Dependencies
         run: flutter pub get
-        working-directory: sout_we_rouh
 
       - name: Build Web
         run: flutter build web --release --base-href "/sout_we_rouh/"
-        working-directory: sout_we_rouh
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: sout_we_rouh/build/web
+          publish_dir: build/web
