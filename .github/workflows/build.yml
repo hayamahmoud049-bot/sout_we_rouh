@@ -1,35 +1,22 @@
 name: Build Flutter APK
-
-on:
-  push:
-    branches: [ main ]
-
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Unzip project
-        run: unzip -o sout_we_rouh.zip
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.x'
-          channel: 'stable'
-
-      - name: Get Dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk --release
+        run: unzip -o sout_we_rouh.zip -d project_folder
+      - uses: subosito/flutter-action@v2
+        with: {flutter-version: '3.x'}
+      - name: Build
+        run: |
+          cd project_folder
+          flutter pub get
+          flutter build apk --release
         env:
-          ORG_GRADLE_PROJECT_jvmargs: "-Xmx3g -XX:MaxMetaspaceSize=512m"
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+          ORG_GRADLE_PROJECT_jvmargs: "-Xmx3g"
+      - uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: project_folder/build/app/outputs/flutter-apk/app-release.apk
