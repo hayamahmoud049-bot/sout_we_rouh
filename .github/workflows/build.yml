@@ -7,30 +7,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Unzip project
-      run: |
-        unzip -q sout_we_rouh.zip -d extracted_project
-        shopt -s dotglob
-        mv extracted_project/*/* extracted_project/ 2>/dev/null || true
-        mv extracted_project/* ./ 2>/dev/null || true
+      - name: Unzip project
+        run: unzip -q sout_we_rouh.zip -d sout_we_rouh
 
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.x'
-        channel: 'stable'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+          channel: 'stable'
 
-    - name: Get Dependencies
-      run: flutter pub get
+      - name: Get Dependencies
+        run: flutter pub get
+        working-directory: sout_we_rouh
 
-    - name: Build APK
-      run: flutter build apk --release
+      - name: Build APK
+        run: flutter build apk --release
+        working-directory: sout_we_rouh
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: sout_we_rouh/build/app/outputs/flutter-apk/app-release.apk
