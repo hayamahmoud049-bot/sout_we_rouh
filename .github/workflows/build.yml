@@ -22,14 +22,14 @@ jobs:
 
       - name: Get Dependencies
         run: flutter pub get
-        working-directory: sout_we_rouh
 
       - name: Build APK
         run: flutter build apk --release
-        working-directory: sout_we_rouh
+        env:
+          ORG_GRADLE_PROJECT_jvmargs: "-Xmx3g -XX:MaxMetaspaceSize=512m"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: sout_we_rouh/build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
